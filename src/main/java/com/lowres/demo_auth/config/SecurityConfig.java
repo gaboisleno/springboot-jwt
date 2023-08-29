@@ -8,9 +8,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import com.lowres.demo_auth.jwtAuth.JwtAuthFilter;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 @Configuration
@@ -24,22 +25,34 @@ public class SecurityConfig {
     AuthenticationProvider authProvider;
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception 
-    {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests((authRequests) -> 
-                authRequests
-                .antMatchers("/auth/**").permitAll()
-                .anyRequest().authenticated()
-            )
-            .sessionManagement(sessionManager -> 
-                sessionManager
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            )
-            .authenticationProvider(authProvider)
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests((authRequests) ->
+                        authRequests
+                                .antMatchers("/api/auth/**").permitAll()
+                                .anyRequest().authenticated()
+                )
+                .sessionManagement(sessionManager ->
+                        sessionManager
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                )
+                .authenticationProvider(authProvider)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
             
         return http.build();
     }
+
+    @Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.addAllowedOrigin("http://localhost:4200/"); /* Allow localhost for developing */
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 }

@@ -16,7 +16,8 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
     
-    private static final String SECRET_KEY = "FJmtfHQMtuxR34bMTDKs58fOuKekm8mKFJmtfHQMtuxR34bMTDKs58fOuKekm8mK"; 
+    //  https://generate-random.org/encryption-key-generator
+    private static final String SECRET_KEY = "13QVu7z8LFtAvHeuF+ktK5zn6vUIEZEFuBnW2fbO5tWTCGhBFcpdK3qvwyT5syNk"; 
 
     public String getToken(UserDetails user) {
         return getToken(new HashMap<>(), user);
