@@ -3,37 +3,44 @@ package com.lowres.demo_auth.model;
 import java.util.Collection;
 import java.util.List;
 
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.MongoId;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.bind.DefaultValue;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.mongodb.lang.NonNull;
 
-@Document("users")
+@Entity(name = "app_user")
 public class User implements UserDetails {
 
-    @MongoId
-    private String id;
-
-    @NonNull
-    @Indexed(unique = true)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+ 
+    @Column(name = "username")
     private String username;
-    
-    @NonNull
+ 
+    @Column(name = "password")
     private String password;
     
+    @Column(name = "email")
     private String email;
 
-    private String role;
+    @Column(name = "role")
+    private String role = "USER_ROLE";
 
-    public String getId() {
+    public Long getId() {
         return this.id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -92,6 +99,17 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" + 
+        "id='" + id + "\'" +
+        ", username='" + username + "\'" +
+        ", password='" + password + "\'" +
+        ", email='" + email + "\'" +
+        ", role='" + role + "\'" +
+        "}";
     }
 
 }

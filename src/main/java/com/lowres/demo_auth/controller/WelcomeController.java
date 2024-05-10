@@ -5,10 +5,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping()
 public class WelcomeController {
     
-    @GetMapping("/welcome")
+    @GetMapping("/public")
+    public String hello() {
+        return "Welcome from public endpoint";
+    }
+
+    @GetMapping("/private")
     public String welcome() {
         return "Welcome from secure endpoint";
     }

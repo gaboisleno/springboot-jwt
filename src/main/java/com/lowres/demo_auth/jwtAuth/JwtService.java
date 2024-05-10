@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,8 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
     
-    //  https://generate-random.org/encryption-key-generator
-    private static final String SECRET_KEY = "13QVu7z8LFtAvHeuF+ktK5zn6vUIEZEFuBnW2fbO5tWTCGhBFcpdK3qvwyT5syNk"; 
+    @Value("${JWT_SECRET_KEY}")
+    private String SECRET_KEY; 
 
     public String getToken(UserDetails user) {
         return getToken(new HashMap<>(), user);
@@ -28,6 +29,7 @@ public class JwtService {
         .builder()
         .setClaims(extraClaims)
         .setSubject(user.getUsername())
+        .claim("customClaim", "myCustomClaim")
         .setIssuedAt(new Date(System.currentTimeMillis()))
         .setExpiration(new Date(System.currentTimeMillis() + 1000*60*24))   // 24 hours expiration token
         .signWith(getKey(), SignatureAlgorithm.HS256)

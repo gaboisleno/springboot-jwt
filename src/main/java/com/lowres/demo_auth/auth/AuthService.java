@@ -1,5 +1,7 @@
 package com.lowres.demo_auth.auth;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +20,8 @@ public class AuthService {
     @Autowired JwtService jwtService;
     @Autowired PasswordEncoder passwordEncoder;
     @Autowired AuthenticationManager authenticationManager;
+
+    private Logger logger = LoggerFactory.getLogger(AuthService.class);
 
     /*
      * Login user or throw exception 
