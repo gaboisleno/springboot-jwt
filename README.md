@@ -1,22 +1,39 @@
-## Liquibase Installation
+# Spring / JWT / H2
 
-Add Liquibase dependency
+## Needed to Start
 
-```xml
-    <dependency>
-        <groupId>org.liquibase</groupId>
-        <artifactId>liquibase-core</artifactId>
-    </dependency>
+- Java 17
+
+## Running
+
+```bash
+./mvnw spring-boot:run
 ```
 
-In the pom.xml add liquibase master file location
+The project is ready to work.
+
+Next, I will explain the steps I took to install everything just for documentation purposes.
+
+### Liquibase Installation
+
+Add Liquibase dependency in the `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>org.liquibase</groupId>
+    <artifactId>liquibase-core</artifactId>
+</dependency>
+```
+
+In the `application.properties` add liquibase master file location
 
 ```bash
 spring.liquibase.change-log=classpath:/liquibase/master.xml
 ```
 
-> Create directory `/resources/liquibase/changelog`
-> Create `master.xml` in `/resources/liquibase`
+Create directory `/resources/liquibase/changelog`
+
+Create `master.xml` in `/resources/liquibase`
 
 `master.xml` will read all files inside `/resources/liquibase/changelog`
 
@@ -30,16 +47,17 @@ spring.liquibase.change-log=classpath:/liquibase/master.xml
 </databaseChangeLog>
 ```
 
-Finally add one initial migration to avoid failure on springboot:run.
-If you preffer you can add manually one by one migration in the master.xml file changing the includeAll tag for
+Finally, add one initial migration to avoid failure on `springboot:run`.
+
+If you prefer, you can add migrations manually one by one in the `master.xml` file changing the `includeAll` tag to:
 
 ```xml
 <include file="path/to/file">
 ```
 
-## H2 Installation
+### H2 Installation
 
-Add H2 dependency
+Add H2 dependency in the `pom.xml`:
 
 ```xml
     <dependency>
@@ -49,7 +67,7 @@ Add H2 dependency
     </dependency>
 ```
 
-In the pom.xml add h2 configuration for conection and local file
+In the `application.properties`, add H2 configuration for connection and local file:
 
 ```bash
 spring.datasource.url=jdbc:h2:file:./src/main/resources/data/h2database
@@ -59,13 +77,15 @@ spring.datasource.password=
 spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
 ```
 
-## JWT Installation
+### JWT Installation
 
 TO-DO
 
-## Endpoints
+### Endpoints
 
 `POST` `http://localhost:8080/api/auth/register`
+
+body:
 
 ```json
 {
@@ -83,6 +103,8 @@ Response
 ```
 
 `POST` `http://localhost:8080/api/auth/login`
+
+body:
 
 ```json
 {
